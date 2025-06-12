@@ -70,10 +70,14 @@ class AntCertificationUtil
      */
     function hex2dec($hex)
     {
-        $dec = 0;
+        // 移除 0x 前缀
+        $hex = ltrim($hex, '0x');
+        $dec = '0';
         $len = strlen($hex);
-        for ($i = 1; $i <= $len; $i++) {
-            $dec = bcadd($dec, bcmul(strval(hexdec($hex[$i - 1])), bcpow('16', strval($len - $i))));
+        for ($i = 0; $i < $len; $i++) {
+            $char = $hex[$i];
+            $value = hexdec($char);
+            $dec = bcadd($dec, bcmul($value, bcpow('16', $len - $i - 1)));
         }
         return $dec;
     }
